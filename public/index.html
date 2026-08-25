@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AI SWARMER OS</title>
+  <link rel="icon" href="/ai-swarmer-mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/wisdom.css">
+  <link rel="stylesheet" href="/navigation.css">
+</head>
+<body>
+  <aside>
+    <div class="brand"><span class="mark">S</span><div>AI SWARMER OS<small>DEFENSE CONTROL PLANE</small></div></div>
+    <nav>
+      <button data-view="overview" class="active">Overview</button>
+      <button data-view="agents">Agent registry</button>
+      <button data-view="incidents">Incidents</button>
+      <button data-view="activity">Activity</button>
+      <button data-view="campaigns">Campaign tracing</button>
+      <button data-view="audit">Audit integrity</button>
+      <a class="nav-link" href="/investor">Investor intelligence room <span>↗</span></a>
+    </nav>
+    <div class="status"><i></i> Defense fabric online</div>
+  </aside>
+  <main>
+    <header><div><span class="eyebrow">WILKERSON COLLECTIVE / VERLORAY SECURITY</span><h1 id="title">Security overview</h1></div><button id="refresh">Refresh intelligence</button></header>
+    <div id="notice"></div><section id="content"></section>
+  </main>
+  <button id="wisdomOrb" class="wisdom-orb" aria-label="Open WISDOM guide"><span class="wisdom-face">W</span><span><b>WISDOM</b><small>CHIEF-OF-STAFF GUIDE</small></span><i></i></button>
+  <section id="wisdomPanel" class="wisdom-panel" aria-label="WISDOM assistant" hidden>
+    <header><div><span class="wisdom-face">W</span><div><b>WISDOM</b><small id="wisdomState">SECURE GUIDE</small></div></div><button id="wisdomClose" aria-label="Close WISDOM">×</button></header>
+    <div id="wisdomVideo" class="wisdom-video"><div class="wisdom-portrait"><span>W</span><b>Photorealistic guide adapter</b><small id="wisdomConfig">Checking configuration…</small></div></div>
+    <div id="wisdomMessages" class="wisdom-messages"><div class="wisdom-message">I’m WISDOM, the chief-of-staff guide. I explain the platform, orchestrate specialist Knowledge Guides, navigate workflows, summarize live security posture, and prepare auditable actions.</div></div>
+    <form id="wisdomForm"><input id="wisdomInput" aria-label="Message WISDOM" placeholder="Ask WISDOM anything…" autocomplete="off"><button>Send</button></form>
+    <button id="startWisdom" class="wisdom-call">Start private voice + video conversation</button>
+  </section>
+  <dialog id="agentDialog"><form method="dialog" id="agentForm"><h2>Register protected agent</h2><label>Name<input name="name" required></label><label>Owner<input name="owner" required type="email"></label><label>Purpose<textarea name="purpose" required></textarea></label><label>Allowed tools (comma separated)<input name="allowed_tools" placeholder="search, database.read"></label><label>Allowed destinations<input name="allowed_destinations" placeholder="api.example.com"></label><div class="actions"><button value="cancel">Cancel</button><button value="default" id="saveAgent">Register agent</button></div></form></dialog>
+  <script src="/app.js"></script>
+</body>
+</html>
