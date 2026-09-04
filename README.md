@@ -1,12 +1,16 @@
 # AI SWARMER OS
 
-A runnable defensive control-plane MVP for registering AI agents, ingesting signed runtime telemetry, enforcing deterministic policy, opening evidence-backed incidents, and containing agents.
+**Zero trust for autonomous action.** AI SWARMER OS is a defensive security control plane for governing AI agents and the capabilities they use: skills, MCP servers, plugins, repositories, packages, workflows, model tools, API connectors and updates.
+
+## Core architecture
+
+`Guest List → Capability Gate → Risk/Policy Engine → Red Room → Behavior Verification → Capability Passport → Reputation Ledger → Runtime Enforcement`
+
+The Capability Gate separates **identity trust** from **payload trust**. Approved sources are still inspected. Capabilities are fingerprinted and material changes trigger revalidation. Claimed-vs-observed behavioral mismatch results in quarantine.
 
 ## Run locally
 
 Requires Node.js 22.5 or newer (Node 24 recommended).
-
-On this Windows workspace, double-click `START-AI-SWARMER-OS.cmd`. It starts the local server and opens the dashboard. Keep the project folder in place; the service stores its local database under `data/`.
 
 ```powershell
 Copy-Item .env.example .env
@@ -16,50 +20,29 @@ npm test
 npm start
 ```
 
-Open `http://localhost:8080`, then set the same admin token in the browser console once:
+## Security properties in this build
 
-```js
-localStorage.setItem('swarmer_token', 'use-a-long-random-admin-token'); location.reload()
-```
-
-## Signed telemetry example
-
-Collectors POST JSON to `/api/v1/events` with `X-Swarmer-Signature`, the lowercase hex HMAC-SHA256 of the exact request body using `SWARMER_INGEST_SECRET`. A blocked response is HTTP 403; allowed/review events return HTTP 202.
-
-```json
-{"agent_id":"registry UUID","action":"tool.call","resource":"shell","attributes":{"command":"curl example"}}
-```
-
-## Real security properties in this build
-
-- Enforceable agent tool and network-destination allowlists
-- Signed telemetry with constant-time signature comparison
-- Deterministic prompt-injection, sensitive-data, credential, shell, delegation, and high-volume egress detections
-- Progressive decisions: allow, review, block
+- Agent tool and network-destination allowlists
+- Signed runtime telemetry and deterministic policy enforcement
+- Prompt-injection, sensitive-data, credential, shell, delegation and high-volume egress detections
+- Capability Gate static/semantic heuristics, permission analysis, SHA-256 capability fingerprinting and admission decisions
+- Claimed-vs-observed behavior comparison with quarantine decisions
+- Red Room-required state for capabilities needing behavioral verification
+- Continuous-trust revalidation triggers for code, version, dependency, permission, publisher and fingerprint changes
 - Reversible agent kill switch
 - Evidence-backed incidents and risk state
-- Append-only SHA-256 chained audit history with verification
-- Passive network evidence, route provenance, behavioral fingerprints, campaign correlation, and sourced threat-intelligence matching
-- Persistent WISDOM guide with text workflow assistance and optional private Tavus CVI voice/video sessions
-- Interactive investor intelligence room at `/investor`, with skeptical diligence Q&A and orchestrated CTO, CFO, security, GTM, and governance Knowledge Guides
+- Append-only SHA-256 chained audit history
+- Passive network evidence, behavioral fingerprints, campaign correlation and sourced threat-intelligence matching
 - Persistent SQLite storage using WAL and foreign keys
-- Safe response headers, bounded request bodies, and escaped UI output
 
-This is an operational MVP, not a claim of complete network protection. Production deployment still requires collectors/enforcement adapters at the agent gateway, identity provider, endpoint, cloud, and network egress layers; stronger enterprise authentication; TLS; secrets management; backups; tenant isolation; and external security testing.
+## Why SWARMER exists
 
-Attribution is deliberately evidence-based: the system correlates infrastructure and technical characteristics but never equates an IP address with a human identity. It does not hack back or access suspected third-party infrastructure.
+Conventional endpoint, network, cloud and SIEM security remain essential. Agentic AI adds another control problem: autonomous software can reason, invoke tools, access sensitive systems and take consequential actions. SWARMER is designed as the admission, governance and runtime safety layer between autonomous intelligence and enterprise authority.
 
-## Configure WISDOM live video
+See `docs/CAPABILITY_GATE_AND_MARKET_POSITION.md` for the researched architecture/competitive positioning and `docs/AI_SWARMER_TRIFOLD_COPY.md` for the trifold marketing copy.
 
-Create a Tavus persona and replica, then set `TAVUS_API_KEY`, `TAVUS_PERSONA_ID`, and optionally `TAVUS_REPLICA_ID` before starting the server. The API key remains server-side. Optional `TAVUS_DOCUMENT_IDS` accepts comma-separated Tavus knowledge-base document IDs. Without these settings, WISDOM remains available as a persistent text guide; the photorealistic voice/video session clearly reports that Tavus configuration is required.
+## Current maturity
 
-Specialist guide personas can be configured with `TAVUS_SENTINEL_PERSONA_ID`, `TAVUS_ARCHITECT_PERSONA_ID`, `TAVUS_STEWARD_PERSONA_ID`, `TAVUS_VANGUARD_PERSONA_ID`, and `TAVUS_COUNSEL_PERSONA_ID` plus matching replica variables. If omitted, each guide falls back to the generic Tavus persona/replica.
+This repository is an operational MVP, **not a claim of complete network protection or independently validated superiority over established cybersecurity platforms**. Production deployment still requires collectors/enforcement adapters at agent gateways, identity, endpoint, cloud and network egress layers; enterprise authentication; TLS; secrets management; backups; tenant isolation; full sandbox infrastructure; dependency/SBOM scanners; and independent penetration/red-team testing.
 
-## Company and investor system
-
-- `docs/FOUNDER_BRAIN.md` is the durable company vocabulary and decision source. WISDOM is the chief-of-staff Wisdom Guide; specialist agents are Knowledge Guides.
-- `docs/AI_SWARMER_OS_COMPANY_BUILD_AND_GTM_PLAN.md` is the portable maintained strategy source.
-- `deliverables/AI_SWARMER_OS_Company_Build_and_GTM_Plan.docx` is the formatted business-plan document.
-- `deliverables/AI_SWARMER_OS_Investor_Briefing.pptx` is the portable investor presentation with source notes.
-- `deliverables/AI_SWARMER_OS_Logo.svg` and `deliverables/AI_SWARMER_OS_Mark.svg` are editable vector brand assets.
-- The reusable personal presentation template is installed as `$artifact-template-ai-swarmer-living-investor-pitch`.
+Attribution is deliberately evidence-based. SWARMER correlates infrastructure and technical characteristics but never equates an IP address with a human identity and does not hack back.
