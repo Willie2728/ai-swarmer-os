@@ -8,12 +8,15 @@ import { detectThreats, enforcementDecision } from './detection.js';
 import { collectNetworkEvidence, attributionAssessment } from './attribution.js';
 import { createGuideSession, createWisdomSession, interpretWisdomTask, wisdomStatus } from './wisdom.js';
 import { answerGuideQuestion } from './guides.js';
+import { buildRecoveryCapsule, recoveryDecision, KAMERON_INTEGRATION_VERSION } from './kameron.js';
 
 const root=path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const port=Number(process.env.PORT||8080), host=process.env.HOST||'127.0.0.1', admin=process.env.SWARMER_ADMIN_TOKEN||'dev-admin-change-me', secret=process.env.SWARMER_INGEST_SECRET||'dev-ingest-change-me';
 const trustProxy=process.env.TRUST_PROXY==='true';
 if(process.env.NODE_ENV==='production'&&(admin.startsWith('dev-')||secret.startsWith('dev-'))) throw Error('Production requires explicit SWARMER_ADMIN_TOKEN and SWARMER_INGEST_SECRET');
 const store=new Store(path.resolve(process.env.SWARMER_DB_PATH||path.join(root,'data','swarmer.db')));
+const kameronCheckpoints=new Map();
+const kameronDecisions=[];
 const securityHeaders={'cache-control':'no-store','x-content-type-options':'nosniff','x-frame-options':'DENY','referrer-policy':'no-referrer','permissions-policy':'camera=(self), microphone=(self)','content-security-policy':"default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; frame-src https://*.daily.co"};
 const json=(res,status,data)=>{res.writeHead(status,{'content-type':'application/json',...securityHeaders});res.end(JSON.stringify(data));};
 const body=async req=>{let s='';for await(const c of req){s+=c;if(s.length>1_000_000)throw Error('Body too large');}return s;};
@@ -32,7 +35,7 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==='GET'&&url.pathname==='/ai-swarmer-mark.svg')return serve(res,'ai-swarmer-mark.svg','image/svg+xml');
   if(req.method==='GET'&&url.pathname==='/investor.js')return serve(res,'investor.js','text/javascript; charset=utf-8');
   if(req.method==='GET'&&url.pathname==='/investor.css')return serve(res,'investor.css','text/css; charset=utf-8');
-  if(req.method==='GET'&&url.pathname==='/health')return json(res,200,{status:'ok',service:'ai-swarmer-os',time:new Date().toISOString()});
+  if(req.method==='GET'&&url.pathname==='/health')return json(res,200,{status:'ok',service:'ai-swarmer-os',kameron_integration:KAMERON_INTEGRATION_VERSION,time:new Date().toISOString()});
   if(!url.pathname.startsWith('/api/'))return json(res,404,{error:'Not found'});
   if(req.method==='POST'&&url.pathname==='/api/v1/events'){
     const raw=await body(req), sig=req.headers['x-swarmer-signature']||'', expected=createHmac('sha256',secret).update(raw).digest('hex');
@@ -45,7 +48,7 @@ const server=http.createServer(async(req,res)=>{try{
     const decision=enforcementDecision(agent,findings); const recorded=store.recordEvent(e,decision,findings,attribution); recorded.intelligence_matches=intelMatches; return json(res,decision.outcome==='block'?403:202,recorded);
   }
   if(!auth(req))return json(res,401,{error:'Admin bearer token required'});
-  if(req.method==='GET'&&url.pathname==='/api/v1/overview')return json(res,200,store.overview());
+  if(req.method==='GET'&&url.pathname==='/api/v1/overview')return json(res,200,{...store.overview(),kameron:{checkpoints:kameronCheckpoints.size,recovery_decisions:kameronDecisions.length,integration_version:KAMERON_INTEGRATION_VERSION}});
   if(req.method==='GET'&&url.pathname==='/api/v1/agents')return json(res,200,store.agents());
   if(req.method==='POST'&&url.pathname==='/api/v1/agents'){const a=JSON.parse(await body(req));if(!a.name||!a.owner||!a.purpose)return json(res,400,{error:'name, owner, purpose required'});return json(res,201,store.createAgent(a));}
   if(req.method==='GET'&&url.pathname==='/api/v1/events')return json(res,200,store.events());
@@ -59,6 +62,11 @@ const server=http.createServer(async(req,res)=>{try{
   if(req.method==='GET'&&url.pathname==='/api/v1/campaigns')return json(res,200,store.campaigns());
   if(req.method==='GET'&&url.pathname==='/api/v1/threat-intel')return json(res,200,store.intel());
   if(req.method==='POST'&&url.pathname==='/api/v1/threat-intel'){const x=JSON.parse(await body(req));if(!['ip','fingerprint','process_hash','tool_signature'].includes(x.indicator_type)||!x.indicator_value||!x.classification||!x.source||!Number.isFinite(Number(x.confidence)))return json(res,400,{error:'indicator_type, indicator_value, classification, confidence, and source required'});return json(res,201,store.addIntel(x));}
+  if(req.method==='GET'&&url.pathname==='/api/v1/kameron/checkpoints')return json(res,200,[...kameronCheckpoints.values()].sort((a,b)=>b.created_at.localeCompare(a.created_at)));
+  if(req.method==='POST'&&url.pathname==='/api/v1/kameron/checkpoints'){const x=JSON.parse(await body(req)||'{}');if(!x.task_id||!x.agent_id)return json(res,400,{error:'task_id and agent_id required'});if(!store.getAgent(x.agent_id))return json(res,404,{error:'Unknown agent'});const capsule=buildRecoveryCapsule(x);kameronCheckpoints.set(capsule.capsule_id,capsule);store.audit('kameron-runtime','kameron.checkpoint.create',capsule.capsule_id,{task_id:capsule.task_id,agent_id:capsule.agent_id,trust_score:capsule.swarmer_trust_score});return json(res,201,capsule);}
+  if(req.method==='GET'&&url.pathname==='/api/v1/kameron/recovery-decisions')return json(res,200,kameronDecisions.slice().reverse());
+  const recovery=url.pathname.match(/^\/api\/v1\/kameron\/checkpoints\/([^/]+)\/evaluate$/);
+  if(req.method==='POST'&&recovery){const capsule=kameronCheckpoints.get(recovery[1]);if(!capsule)return json(res,404,{error:'Unknown checkpoint'});const x=JSON.parse(await body(req)||'{}');const decision=recoveryDecision(capsule,{minimum_trust_score:x.minimum_trust_score});kameronDecisions.push(decision);store.audit('swarmer','kameron.recovery.evaluate',capsule.capsule_id,{outcome:decision.outcome,reasons:decision.validation.reasons});return json(res,decision.validation.approved?200:409,decision);}
   const campaign=url.pathname.match(/^\/api\/v1\/campaigns\/([^/]+)$/);
   if(req.method==='GET'&&campaign){const result=store.campaign(campaign[1]);return result?json(res,200,result):json(res,404,{error:'Unknown campaign'});}
   const m=url.pathname.match(/^\/api\/v1\/agents\/([^/]+)\/(contain|release)$/);
