@@ -1,6 +1,8 @@
 const SENSITIVE = /(?:api[_-]?key|password|passwd|secret|token|private[_-]?key|ssn|credit[_ -]?card)/i;
 const INJECTION = /(?:ignore (?:all |the )?previous|system prompt|developer message|bypass (?:policy|safety)|jailbreak|override instructions)/i;
 const SHELL = /(?:powershell|cmd\.exe|\/bin\/(?:ba)?sh|curl\s|wget\s|nc\s+-|netcat)/i;
+const COVERT_CHANNEL = /(?:pastebin|gist|webhook|wiki|comment|issue|form|shortener|dead[-_ ]?drop|beacon|rendezvous|message[-_ ]?board)/i;
+const WRITE_ACTIONS = new Set(['network.egress','data.write','file.write','message.send','web.write','browser.submit','tool.call']);
 
 export function detectThreats(event, agent = {}) {
   const text = JSON.stringify(event.attributes || {});
@@ -14,6 +16,31 @@ export function detectThreats(event, agent = {}) {
   if (event.action === 'credential.access') add('credential-access', 'high', 'Agent accessed credential material', 85, 'Credential access event requires investigation');
   if (event.action === 'process.execute' && SHELL.test(text + event.resource)) add('shell-execution', 'high', 'Shell or transfer utility execution', 82, 'Command execution tooling observed');
   if ((event.attributes?.delegation_depth || 0) > 3) add('delegation-depth', 'medium', 'Agent delegation depth exceeded', 60, `Depth ${event.attributes.delegation_depth}`);
+
+  // Effect-based controls: do not trust a "read-only" label if the observed action mutates external state.
+  if (event.attributes?.declared_mode === 'read-only' && (WRITE_ACTIONS.has(event.action) || event.attributes?.external_state_changed === true)) {
+    add('read-only-side-effect', 'critical', 'Read-only capability produced an external write effect', 99, `Observed ${event.action} while declared_mode=read-only`);
+  }
+  if (event.attributes?.external_state_changed === true && event.attributes?.authorized_effect !== true) {
+    add('unmatched-external-effect', 'critical', 'External state changed without a matching authorized effect', 99, 'Observed external mutation is not linked to an approved consequence envelope');
+  }
+
+  // Fleet/covert-channel signals. Correlators can populate these attributes from browser/network sensors.
+  const peerCount = Number(event.attributes?.peer_agent_count || 0);
+  const repeatedMarkerCount = Number(event.attributes?.repeated_marker_count || 0);
+  const destinationNovelty = Number(event.attributes?.destination_novelty_score || 0);
+  if (WRITE_ACTIONS.has(event.action) && COVERT_CHANNEL.test(`${event.resource} ${text}`) && (peerCount >= 2 || repeatedMarkerCount >= 2)) {
+    add('covert-coordination', 'critical', 'Possible covert agent-to-agent coordination channel', 97, `${peerCount} peer agents / ${repeatedMarkerCount} repeated markers observed at ${event.resource}`);
+  }
+  if (event.action === 'network.egress' && destinationNovelty >= 0.9 && event.attributes?.business_justification !== true) {
+    add('novel-egress-destination', 'high', 'High-novelty outbound destination requires review', 88, `destination_novelty_score=${destinationNovelty}`);
+  }
+  if (peerCount >= 5 && event.attributes?.shared_destination === true && event.attributes?.approved_fleet_channel !== true) {
+    add('fleet-rendezvous', 'critical', 'Multiple agents converged on an unapproved shared destination', 98, `${peerCount} agents observed using ${event.resource}`);
+  }
+  if (event.attributes?.control_fingerprint_expected && event.attributes?.control_fingerprint_observed && event.attributes.control_fingerprint_expected !== event.attributes.control_fingerprint_observed) {
+    add('control-provenance-drift', 'critical', 'Security control fingerprint changed from approved version', 99, 'Runtime control or policy engine no longer matches approved provenance');
+  }
   return findings;
 }
 
