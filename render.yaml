@@ -3,12 +3,14 @@ services:
     name: ai-swarmer-os
     runtime: node
     plan: free
-    buildCommand: npm ci
+    buildCommand: npm install
     startCommand: npm start
     healthCheckPath: /health
     envVars:
       - key: NODE_VERSION
         value: "22"
+      - key: NODE_ENV
+        value: production
       - key: HOST
         value: 0.0.0.0
       - key: SWARMER_ADMIN_TOKEN
