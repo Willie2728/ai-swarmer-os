@@ -9,6 +9,7 @@ import { collectNetworkEvidence, attributionAssessment } from './attribution.js'
 import { createGuideSession, createWisdomSession, interpretWisdomTask, wisdomStatus } from './wisdom.js';
 import { answerGuideQuestion } from './guides.js';
 import { buildRecoveryCapsule, recoveryDecision, KAMERON_INTEGRATION_VERSION } from './kameron.js';
+import { admitVisitingAgentRequest, releaseTrustedAgentResult, trustedHandoffPolicy } from './trusted-handoff.js';
 
 const root=path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const port=Number(process.env.PORT||8080), host=process.env.HOST||'127.0.0.1', admin=process.env.SWARMER_ADMIN_TOKEN||'dev-admin-change-me', secret=process.env.SWARMER_INGEST_SECRET||'dev-ingest-change-me';
@@ -17,6 +18,7 @@ if(process.env.NODE_ENV==='production'&&(admin.startsWith('dev-')||secret.starts
 const store=new Store(path.resolve(process.env.SWARMER_DB_PATH||path.join(root,'data','swarmer.db')));
 const kameronCheckpoints=new Map();
 const kameronDecisions=[];
+const trustedHandoffs=new Map();
 const securityHeaders={'cache-control':'no-store','x-content-type-options':'nosniff','x-frame-options':'DENY','referrer-policy':'no-referrer','permissions-policy':'camera=(self), microphone=(self)','content-security-policy':"default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; frame-src https://*.daily.co"};
 const json=(res,status,data)=>{res.writeHead(status,{'content-type':'application/json',...securityHeaders});res.end(JSON.stringify(data));};
 const body=async req=>{let s='';for await(const c of req){s+=c;if(s.length>1_000_000)throw Error('Body too large');}return s;};
@@ -48,7 +50,11 @@ const server=http.createServer(async(req,res)=>{try{
     const decision=enforcementDecision(agent,findings); const recorded=store.recordEvent(e,decision,findings,attribution); recorded.intelligence_matches=intelMatches; return json(res,decision.outcome==='block'?403:202,recorded);
   }
   if(!auth(req))return json(res,401,{error:'Admin bearer token required'});
-  if(req.method==='GET'&&url.pathname==='/api/v1/overview')return json(res,200,{...store.overview(),kameron:{checkpoints:kameronCheckpoints.size,recovery_decisions:kameronDecisions.length,integration_version:KAMERON_INTEGRATION_VERSION}});
+  if(req.method==='POST'&&url.pathname==='/api/v1/a2a/handoff'){const x=JSON.parse(await body(req)||'{}');const h=admitVisitingAgentRequest(x);trustedHandoffs.set(h.request_id,h);store.audit('a2a-frontier','trusted-handoff.admit',h.request_id,{outcome:h.outcome,action:h.action,reasons:h.reasons});return json(res,h.outcome==='handoff'?202:403,h);}
+  const handoffResult=url.pathname.match(/^\/api\/v1\/a2a\/handoff\/([^/]+)\/result$/);
+  if(req.method==='POST'&&handoffResult){const h=trustedHandoffs.get(handoffResult[1]);if(!h)return json(res,404,{error:'Unknown handoff'});if(h.outcome!=='handoff')return json(res,409,{error:'Rejected handoff cannot release a result'});const x=JSON.parse(await body(req)||'{}');const out=releaseTrustedAgentResult(h,x);store.audit('result-gate','trusted-handoff.return',h.request_id,{result_sha256:out.result_sha256});return json(res,200,out);}
+  if(req.method==='GET'&&url.pathname==='/api/v1/a2a/policy')return json(res,200,trustedHandoffPolicy);
+  if(req.method==='GET'&&url.pathname==='/api/v1/overview')return json(res,200,{...store.overview(),trusted_handoff:{active:trustedHandoffs.size,policy:trustedHandoffPolicy},kameron:{checkpoints:kameronCheckpoints.size,recovery_decisions:kameronDecisions.length,integration_version:KAMERON_INTEGRATION_VERSION}});
   if(req.method==='GET'&&url.pathname==='/api/v1/agents')return json(res,200,store.agents());
   if(req.method==='POST'&&url.pathname==='/api/v1/agents'){const a=JSON.parse(await body(req));if(!a.name||!a.owner||!a.purpose)return json(res,400,{error:'name, owner, purpose required'});return json(res,201,store.createAgent(a));}
   if(req.method==='GET'&&url.pathname==='/api/v1/events')return json(res,200,store.events());
