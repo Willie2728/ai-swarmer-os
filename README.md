@@ -4,9 +4,13 @@
 
 ## Core architecture
 
-`Guest List → Capability Gate → Risk/Policy Engine → Red Room → Behavior Verification → Capability Passport → Reputation Ledger → Runtime Enforcement`
+`Guest List → Capability Gate → Risk/Policy Engine → Trusted Handoff Gateway / Red Room → Behavior Verification → Capability Passport → Reputation Ledger → Runtime Enforcement`
 
 The Capability Gate separates **identity trust** from **payload trust**. Approved sources are still inspected. Capabilities are fingerprinted and material changes trigger revalidation. Claimed-vs-observed behavioral mismatch results in quarantine.
+
+## A2A Trusted Handoff Gateway
+
+External/visiting agents can delegate work through an A2A-compatible handoff boundary without receiving execution presence or routable access inside the protected workload network. SWARMER sanitizes the request, requires a trusted internal agent to execute approved work, then sanitizes the result before return. See `docs/TRUSTED_HANDOFF_GATEWAY.md`.
 
 ## Run locally
 
