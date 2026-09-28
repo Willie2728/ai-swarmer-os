@@ -51,3 +51,7 @@ export function enforcementDecision(agent, findings) {
   if (findings.some(f => f.severity === 'high')) return { outcome: 'review', reason: 'High-severity behavior requires approval' };
   return { outcome: 'allow', reason: 'No blocking policy matched' };
 }
+
+
+// Living Threat Memory: correlate repeated technical indicators across historical events.
+export { correlateSharedIndicators } from './pattern-correlation.js';

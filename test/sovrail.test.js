@@ -26,4 +26,4 @@ test('request fingerprint is stable for matching request shapes',()=>{
   assert.equal(a,b);
 });
 
-test('integration version is exposed',()=>assert.equal(SOVRAIL_INTEGRATION_VERSION,'2.0-swarmer'));
+test('integration version is exposed',()=>assert.equal(SOVRAIL_INTEGRATION_VERSION,'3.0-swarmer'));
