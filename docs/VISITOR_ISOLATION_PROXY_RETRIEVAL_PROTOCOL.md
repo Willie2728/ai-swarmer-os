@@ -77,3 +77,29 @@ Each test must produce an explicit PASS/FAIL/NOT-ATTEMPTED status with evidence.
 
 ## Design principle
 Expose the minimum universe necessary for the declared transaction. Represent less, reveal less, authorize narrowly, retrieve by proxy, inspect outputs, and preserve evidence.
+
+
+## Test-state cross-reference — 2026-09-28
+
+Authoritative reported executable state for PR #5 `feature/swarmer-self-heal`, verified head `efd250ae841828f7078eb46ae902cd904aa8441e`:
+
+- Latest executable result: **48 PASS / 0 FAIL**.
+- Earlier baseline: 39 PASS / 2 FAIL.
+- Initial PR #5 verification: 43 PASS / 0 FAIL.
+- Five additional deterministic security-control-plane tests raised the executable total to 48 PASS / 0 FAIL.
+- PR #5 remains open and unmerged as of this report.
+- The passing executable result does **not** establish production security certification or complete protocol conformance.
+
+### Remaining production blockers/gaps
+1. Live Red Room or OS/container sandbox proving credential, network, time, and resource isolation.
+2. Full protocol harness for guest-list identity, destination, and data-classification workflows.
+3. End-to-end rejected-event capture, repeat-offender handling, and auditable false-positive exception workflow.
+4. Connected LLM/agent harness for prompt injection, repeated prohibited calls, and role deviation.
+5. Complete approval-role, unauthorized-approver, kill/pause, and reversible-control protocol harness.
+6. Real notification, acknowledgement, assignment, and resolution routing.
+7. Representative p50/p95/p99 latency, throughput, alerting, containment, and sandbox-startup measurements.
+8. Production integration of the control plane into every HTTP event, outbound connector, and containment path.
+9. Production authentication/TLS, durable tenant model, key management, deployment controls, and independent red-team validation.
+
+### New protocol coverage required by this document
+The Visitor Isolation & Proxy Retrieval Protocol adds explicit acceptance tests for sealed-request mutation, scope escalation, service discovery, Network-A topology leakage, Shopper privilege expansion/instruction injection, Chaperone bypass, decoy probing, timeout/overstay, output exfiltration, manifest replay/tampering, operation substitution, in-flight recovery, durable revocation, and audit/evidence integrity. These are not to be counted as PASS until executed with evidence in the appropriate deterministic and production-isolation harnesses.
