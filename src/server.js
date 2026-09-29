@@ -10,6 +10,7 @@ import { createGuideSession, createWisdomSession, interpretWisdomTask, wisdomSta
 import { answerGuideQuestion } from './guides.js';
 import { buildRecoveryCapsule, recoveryDecision, KAMERON_INTEGRATION_VERSION } from './kameron.js';
 import { admitVisitingAgentRequest, releaseTrustedAgentResult, trustedHandoffPolicy } from './trusted-handoff.js';
+import { fortifyTrustedAgent } from './agent-shield.js';
 
 const root=path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const port=Number(process.env.PORT||8080), host=process.env.HOST||'127.0.0.1', admin=process.env.SWARMER_ADMIN_TOKEN||'dev-admin-change-me', secret=process.env.SWARMER_INGEST_SECRET||'dev-ingest-change-me';
@@ -50,7 +51,7 @@ const server=http.createServer(async(req,res)=>{try{
     const decision=enforcementDecision(agent,findings); const recorded=store.recordEvent(e,decision,findings,attribution); recorded.intelligence_matches=intelMatches; return json(res,decision.outcome==='block'?403:202,recorded);
   }
   if(!auth(req))return json(res,401,{error:'Admin bearer token required'});
-  if(req.method==='POST'&&url.pathname==='/api/v1/a2a/handoff'){const x=JSON.parse(await body(req)||'{}');const h=admitVisitingAgentRequest(x);trustedHandoffs.set(h.request_id,h);store.audit('a2a-frontier','trusted-handoff.admit',h.request_id,{outcome:h.outcome,action:h.action,reasons:h.reasons});return json(res,h.outcome==='handoff'?202:403,h);}
+  if(req.method==='POST'&&url.pathname==='/api/v1/a2a/handoff'){const x=JSON.parse(await body(req)||'{}');const h=admitVisitingAgentRequest(x);const shield=fortifyTrustedAgent(h);h.agent_shield=shield;if(shield.contamination_status==='quarantine'){h.outcome='quarantine';h.reasons=[...h.reasons,'handoff content failed trusted-agent contamination inspection'];}trustedHandoffs.set(h.request_id,h);store.audit('a2a-frontier','trusted-handoff.admit',h.request_id,{outcome:h.outcome,action:h.action,reasons:h.reasons});return json(res,h.outcome==='handoff'?202:(h.outcome==='quarantine'?409:403),h);}
   const handoffResult=url.pathname.match(/^\/api\/v1\/a2a\/handoff\/([^/]+)\/result$/);
   if(req.method==='POST'&&handoffResult){const h=trustedHandoffs.get(handoffResult[1]);if(!h)return json(res,404,{error:'Unknown handoff'});if(h.outcome!=='handoff')return json(res,409,{error:'Rejected handoff cannot release a result'});const x=JSON.parse(await body(req)||'{}');const out=releaseTrustedAgentResult(h,x);store.audit('result-gate','trusted-handoff.return',h.request_id,{result_sha256:out.result_sha256});return json(res,200,out);}
   if(req.method==='GET'&&url.pathname==='/api/v1/a2a/policy')return json(res,200,trustedHandoffPolicy);
