@@ -16,6 +16,7 @@ export class Store {
       CREATE INDEX IF NOT EXISTS attribution_campaign_idx ON attribution(campaign_id);
       CREATE INDEX IF NOT EXISTS attribution_source_idx ON attribution(source_ip);
       CREATE TABLE IF NOT EXISTS threat_intel(id TEXT PRIMARY KEY,indicator_type TEXT NOT NULL,indicator_value TEXT NOT NULL,classification TEXT NOT NULL,confidence INTEGER NOT NULL,source TEXT NOT NULL,actor_label TEXT,verified INTEGER NOT NULL DEFAULT 0,notes TEXT NOT NULL DEFAULT '',created_at TEXT NOT NULL,UNIQUE(indicator_type,indicator_value,source));
+      CREATE TABLE IF NOT EXISTS checkpoints(id TEXT PRIMARY KEY,body TEXT NOT NULL);
       CREATE INDEX IF NOT EXISTS threat_intel_indicator_idx ON threat_intel(indicator_type,indicator_value);
     `);
   }

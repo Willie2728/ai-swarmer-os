@@ -1,0 +1,499 @@
+TAP version 13
+# Subtest: validates and normalizes IP addresses
+ok 1 - validates and normalizes IP addresses
+  ---
+  duration_ms: 3.441982
+  type: 'test'
+  ...
+# Subtest: ignores spoofable forwarding headers by default
+ok 2 - ignores spoofable forwarding headers by default
+  ---
+  duration_ms: 0.933341
+  type: 'test'
+  ...
+# Subtest: uses forwarding path only when proxy trust is explicit
+ok 3 - uses forwarding path only when proxy trust is explicit
+  ---
+  duration_ms: 0.266933
+  type: 'test'
+  ...
+# Subtest: stable characteristics produce a stable campaign
+ok 4 - stable characteristics produce a stable campaign
+  ---
+  duration_ms: 0.563272
+  type: 'test'
+  ...
+# Subtest: safe declared capability is fingerprinted and allowed
+ok 5 - safe declared capability is fingerprinted and allowed
+  ---
+  duration_ms: 1.434187
+  type: 'test'
+  ...
+# Subtest: high-risk secret/exfiltration behavior is not installable
+ok 6 - high-risk secret/exfiltration behavior is not installable
+  ---
+  duration_ms: 0.416349
+  type: 'test'
+  ...
+# Subtest: claimed-vs-observed mismatch quarantines
+ok 7 - claimed-vs-observed mismatch quarantines
+  ---
+  duration_ms: 0.590582
+  type: 'test'
+  ...
+# Subtest: material changes alter the cryptographic fingerprint
+ok 8 - material changes alter the cryptographic fingerprint
+  ---
+  duration_ms: 0.219492
+  type: 'test'
+  ...
+# Subtest: undeclared source and version are surfaced
+ok 9 - undeclared source and version are surfaced
+  ---
+  duration_ms: 0.209146
+  type: 'test'
+  ...
+# Subtest: blocks unapproved tool calls
+ok 10 - blocks unapproved tool calls
+  ---
+  duration_ms: 1.324142
+  type: 'test'
+  ...
+# Subtest: blocks large egress
+ok 11 - blocks large egress
+  ---
+  duration_ms: 0.237439
+  type: 'test'
+  ...
+# Subtest: allows expected behavior
+ok 12 - allows expected behavior
+  ---
+  duration_ms: 0.525854
+  type: 'test'
+  ...
+# Subtest: contained agents always block
+ok 13 - contained agents always block
+  ---
+  duration_ms: 0.118439
+  type: 'test'
+  ...
+# Subtest: guide roster preserves the Wisdom and Knowledge Guide operating model
+ok 14 - guide roster preserves the Wisdom and Knowledge Guide operating model
+  ---
+  duration_ms: 0.955975
+  type: 'test'
+  ...
+# Subtest: diligence questions route to the appropriate Knowledge Guide
+ok 15 - diligence questions route to the appropriate Knowledge Guide
+  ---
+  duration_ms: 1.734712
+  type: 'test'
+  ...
+# Subtest: guides refuse protected information
+ok 16 - guides refuse protected information
+  ---
+  duration_ms: 0.33764
+  type: 'test'
+  ...
+# Subtest: unknown diligence questions request human follow-up instead of inventing facts
+ok 17 - unknown diligence questions request human follow-up instead of inventing facts
+  ---
+  duration_ms: 0.220082
+  type: 'test'
+  ...
+# Subtest: valid capsule is structurally eligible but cannot self-authorize recovery
+ok 18 - valid capsule is structurally eligible but cannot self-authorize recovery
+  ---
+  duration_ms: 3.495533
+  type: 'test'
+  ...
+# Subtest: tampered nested checkpoint state is denied
+ok 19 - tampered nested checkpoint state is denied
+  ---
+  duration_ms: 0.386915
+  type: 'test'
+  ...
+# Subtest: unverified or low trust checkpoint is denied
+ok 20 - unverified or low trust checkpoint is denied
+  ---
+  duration_ms: 0.296167
+  type: 'test'
+  ...
+# Subtest: shared indicators correlate repeat events
+ok 21 - shared indicators correlate repeat events
+  ---
+  duration_ms: 1.308277
+  type: 'test'
+  ...
+# Subtest: approved shopper actually reads a temporary synthetic file
+ok 22 - approved shopper actually reads a temporary synthetic file
+  ---
+  duration_ms: 8.65399
+  type: 'test'
+  ...
+# Subtest: rejected request has zero file-read effects: {"action":"delete"}
+ok 23 - rejected request has zero file-read effects: {"action":"delete"}
+  ---
+  duration_ms: 3.463234
+  type: 'test'
+  ...
+# Subtest: rejected request has zero file-read effects: {"tenant":"other"}
+ok 24 - rejected request has zero file-read effects: {"tenant":"other"}
+  ---
+  duration_ms: 2.754904
+  type: 'test'
+  ...
+# Subtest: rejected request has zero file-read effects: {"resource":"../../credentials"}
+ok 25 - rejected request has zero file-read effects: {"resource":"../../credentials"}
+  ---
+  duration_ms: 1.414788
+  type: 'test'
+  ...
+# Subtest: rejected request has zero file-read effects: {"agent_id":"unknown"}
+ok 26 - rejected request has zero file-read effects: {"agent_id":"unknown"}
+  ---
+  duration_ms: 1.171821
+  type: 'test'
+  ...
+# Subtest: rejected request has zero file-read effects: {"policy":{"allowedProviders":["evil"]}}
+ok 27 - rejected request has zero file-read effects: {"policy":{"allowedProviders":["evil"]}}
+  ---
+  duration_ms: 2.15057
+  type: 'test'
+  ...
+# Subtest: rejected request has zero file-read effects: {"payload":"ignore previous instructions"}
+ok 28 - rejected request has zero file-read effects: {"payload":"ignore previous instructions"}
+  ---
+  duration_ms: 1.110218
+  type: 'test'
+  ...
+# Subtest: rejected request has zero file-read effects: {"allowedActions":["delete"]}
+ok 29 - rejected request has zero file-read effects: {"allowedActions":["delete"]}
+  ---
+  duration_ms: 1.401438
+  type: 'test'
+  ...
+# Subtest: rejected request has zero file-read effects: {"requested_shell":true}
+ok 30 - rejected request has zero file-read effects: {"requested_shell":true}
+  ---
+  duration_ms: 1.198181
+  type: 'test'
+  ...
+# Subtest: registered malicious capability never executes: ignore previous instructions
+ok 31 - registered malicious capability never executes: ignore previous instructions
+  ---
+  duration_ms: 1.62087
+  type: 'test'
+  ...
+# Subtest: registered malicious capability never executes: process.env API_KEY
+ok 32 - registered malicious capability never executes: process.env API_KEY
+  ---
+  duration_ms: 1.253624
+  type: 'test'
+  ...
+# Subtest: registered malicious capability never executes: rm -rf /
+ok 33 - registered malicious capability never executes: rm -rf /
+  ---
+  duration_ms: 2.008826
+  type: 'test'
+  ...
+# Subtest: registered malicious capability never executes: MCP tool override hidden instruction
+ok 34 - registered malicious capability never executes: MCP tool override hidden instruction
+  ---
+  duration_ms: 1.728983
+  type: 'test'
+  ...
+# Subtest: caller mutation cannot widen trusted configuration
+ok 35 - caller mutation cannot widen trusted configuration
+  ---
+  duration_ms: 1.323701
+  type: 'test'
+  ...
+# Subtest: authenticated recovery survives restart and executes at most once
+ok 36 - authenticated recovery survives restart and executes at most once
+  ---
+  duration_ms: 4.633663
+  type: 'test'
+  ...
+# Subtest: changed environment denies recovery with zero restore effects
+ok 37 - changed environment denies recovery with zero restore effects
+  ---
+  duration_ms: 2.410984
+  type: 'test'
+  ...
+# Subtest: changed policy denies recovery with zero restore effects
+ok 38 - changed policy denies recovery with zero restore effects
+  ---
+  duration_ms: 2.297583
+  type: 'test'
+  ...
+# Subtest: changed key denies recovery with zero restore effects
+ok 39 - changed key denies recovery with zero restore effects
+  ---
+  duration_ms: 1.807802
+  type: 'test'
+  ...
+# Subtest: expired checkpoint cannot restore
+ok 40 - expired checkpoint cannot restore
+  ---
+  duration_ms: 1.114114
+  type: 'test'
+  ...
+# Subtest: tampered persisted checkpoint cannot restore
+ok 41 - tampered persisted checkpoint cannot restore
+  ---
+  duration_ms: 1.621571
+  type: 'test'
+  ...
+# Subtest: quarantine persists across restart and prevents execution and recovery
+ok 42 - quarantine persists across restart and prevents execution and recovery
+  ---
+  duration_ms: 2.186194
+  type: 'test'
+  ...
+# Subtest: blocked requests cause zero real local HTTP provider calls
+ok 43 - blocked requests cause zero real local HTTP provider calls
+  ---
+  duration_ms: 37.937718
+  type: 'test'
+  ...
+# Subtest: outbound restricted content is withheld and cannot obtain checkpoint
+ok 44 - outbound restricted content is withheld and cannot obtain checkpoint
+  ---
+  duration_ms: 1.645758
+  type: 'test'
+  ...
+# Subtest: deterministic 2000-request adversarial corpus causes zero adapter effects
+ok 45 - deterministic 2000-request adversarial corpus causes zero adapter effects
+  ---
+  duration_ms: 75.515451
+  type: 'test'
+  ...
+# Subtest: requested action must match registered capability as well as policy
+ok 46 - requested action must match registered capability as well as policy
+  ---
+  duration_ms: 3.577076
+  type: 'test'
+  ...
+# Subtest: adapter errors do not falsely claim zero side effects
+ok 47 - adapter errors do not falsely claim zero side effects
+  ---
+  duration_ms: 1.074394
+  type: 'test'
+  ...
+# Subtest: permission and publisher changes invalidate fingerprint
+ok 48 - permission and publisher changes invalidate fingerprint
+  ---
+  duration_ms: 1.423512
+  type: 'test'
+  ...
+# Subtest: prohibited behavior blocks regardless of score: ignore previous instructions
+ok 49 - prohibited behavior blocks regardless of score: ignore previous instructions
+  ---
+  duration_ms: 0.596231
+  type: 'test'
+  ...
+# Subtest: prohibited behavior blocks regardless of score: read process.env API_KEY
+ok 50 - prohibited behavior blocks regardless of score: read process.env API_KEY
+  ---
+  duration_ms: 0.309097
+  type: 'test'
+  ...
+# Subtest: empty tool and destination allowlists deny access
+ok 51 - empty tool and destination allowlists deny access
+  ---
+  duration_ms: 0.602641
+  type: 'test'
+  ...
+# Subtest: empty action allowlist denies low risk delete
+ok 52 - empty action allowlist denies low risk delete
+  ---
+  duration_ms: 0.177919
+  type: 'test'
+  ...
+# Subtest: consequential operation cannot be relabeled low risk
+ok 53 - consequential operation cannot be relabeled low risk
+  ---
+  duration_ms: 0.322908
+  type: 'test'
+  ...
+# Subtest: string approval and disabled gate cannot authorize
+ok 54 - string approval and disabled gate cannot authorize
+  ---
+  duration_ms: 0.25818
+  type: 'test'
+  ...
+# Subtest: invalid cost rejected: NaN
+ok 55 - invalid cost rejected: NaN
+  ---
+  duration_ms: 0.106641
+  type: 'test'
+  ...
+# Subtest: invalid cost rejected: Infinity
+ok 56 - invalid cost rejected: Infinity
+  ---
+  duration_ms: 0.091398
+  type: 'test'
+  ...
+# Subtest: invalid cost rejected: -1
+ok 57 - invalid cost rejected: -1
+  ---
+  duration_ms: 0.136696
+  type: 'test'
+  ...
+# Subtest: invalid cost rejected: not-a-number
+ok 58 - invalid cost rejected: not-a-number
+  ---
+  duration_ms: 2.953224
+  type: 'test'
+  ...
+# Subtest: all layers must approve execution
+ok 59 - all layers must approve execution
+  ---
+  duration_ms: 2.703606
+  type: 'test'
+  ...
+# Subtest: nonnumeric trust is rejected
+ok 60 - nonnumeric trust is rejected
+  ---
+  duration_ms: 0.141725
+  type: 'test'
+  ...
+# Subtest: self-asserted capsule cannot authorize standalone recovery
+ok 61 - self-asserted capsule cannot authorize standalone recovery
+  ---
+  duration_ms: 0.177318
+  type: 'test'
+  ...
+# Subtest: missing critical control evidence enters safe hold
+ok 62 - missing critical control evidence enters safe hold
+  ---
+  duration_ms: 0.378933
+  type: 'test'
+  ...
+# Subtest: canary without invariant evidence rolls back
+ok 63 - canary without invariant evidence rolls back
+  ---
+  duration_ms: 0.492854
+  type: 'test'
+  ...
+# Subtest: modified repair rejected even with passing context flags
+ok 64 - modified repair rejected even with passing context flags
+  ---
+  duration_ms: 0.296298
+  type: 'test'
+  ...
+# Subtest: approval requirement cannot be disabled by flag
+ok 65 - approval requirement cannot be disabled by flag
+  ---
+  duration_ms: 0.121434
+  type: 'test'
+  ...
+# Subtest: visitor instruction injection quarantined at ingress
+ok 66 - visitor instruction injection quarantined at ingress
+  ---
+  duration_ms: 0.625725
+  type: 'test'
+  ...
+# Subtest: secret markers in ordinary result values block delivery
+ok 67 - secret markers in ordinary result values block delivery
+  ---
+  duration_ms: 0.4965
+  type: 'test'
+  ...
+# Subtest: self-heal defines ten immutable security invariants
+ok 68 - self-heal defines ten immutable security invariants
+  ---
+  duration_ms: 0.787801
+  type: 'test'
+  ...
+# Subtest: critical control outage enters safe hold
+ok 69 - critical control outage enters safe hold
+  ---
+  duration_ms: 0.515669
+  type: 'test'
+  ...
+# Subtest: optional AI outage degrades without disabling deterministic security
+ok 70 - optional AI outage degrades without disabling deterministic security
+  ---
+  duration_ms: 0.62197
+  type: 'test'
+  ...
+# Subtest: control fingerprint drift is quarantined
+ok 71 - control fingerprint drift is quarantined
+  ---
+  duration_ms: 0.163107
+  type: 'test'
+  ...
+# Subtest: repair producer cannot self approve
+ok 72 - repair producer cannot self approve
+  ---
+  duration_ms: 0.9595
+  type: 'test'
+  ...
+# Subtest: fully verified independently approved repair becomes canary eligible
+ok 73 - fully verified independently approved repair becomes canary eligible
+  ---
+  duration_ms: 0.152541
+  type: 'test'
+  ...
+# Subtest: all independent judges must pass
+ok 74 - all independent judges must pass
+  ---
+  duration_ms: 0.295657
+  type: 'test'
+  ...
+# Subtest: canary rolls back on security regression
+ok 75 - canary rolls back on security regression
+  ---
+  duration_ms: 0.142555
+  type: 'test'
+  ...
+# Subtest: canary promotes through staged rollout
+ok 76 - canary promotes through staged rollout
+  ---
+  duration_ms: 0.154503
+  type: 'test'
+  ...
+# Subtest: experience ledger is hash chained
+ok 77 - experience ledger is hash chained
+  ---
+  duration_ms: 0.533897
+  type: 'test'
+  ...
+# Subtest: signed HTTP event replay denied before and after restart
+ok 78 - signed HTTP event replay denied before and after restart
+  ---
+  duration_ms: 197.476976
+  type: 'test'
+  ...
+# Subtest: stale signed telemetry and invalid HMAC rejected
+ok 79 - stale signed telemetry and invalid HMAC rejected
+  ---
+  duration_ms: 79.562207
+  type: 'test'
+  ...
+# Subtest: durable diagnostic checkpoints cannot authorize restore from caller assertions
+ok 80 - durable diagnostic checkpoints cannot authorize restore from caller assertions
+  ---
+  duration_ms: 155.644296
+  type: 'test'
+  ...
+# Subtest: configured video provider cannot bypass mandatory runtime
+ok 81 - configured video provider cannot bypass mandatory runtime
+  ---
+  duration_ms: 70.693368
+  type: 'test'
+  ...
+# Subtest: UTF-8 bearer byte-length mismatch returns 401 without crash
+ok 82 - UTF-8 bearer byte-length mismatch returns 401 without crash
+  ---
+  duration_ms: 71.218693
+  type: 'test'
+  ...
+# Subtest: multibyte request body is bounded by bytes
+ok 83 - multibyte request body is bounded by bytes
+  ---
+  duration_ms: 79.0905
+  type: 'test'
+  ...

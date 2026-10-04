@@ -1,0 +1,295 @@
+✖ permission and publisher changes invalidate fingerprint (1.78701ms)
+✖ prohibited behavior blocks regardless of score: ignore previous instructions (0.60878ms)
+✖ prohibited behavior blocks regardless of score: read process.env API_KEY (0.279883ms)
+✖ empty tool and destination allowlists deny access (5.019857ms)
+✖ empty action allowlist denies low risk delete (0.439534ms)
+✖ consequential operation cannot be relabeled low risk (0.153612ms)
+✖ string approval and disabled gate cannot authorize (0.267153ms)
+✖ invalid cost rejected: NaN (0.168445ms)
+✔ invalid cost rejected: Infinity (0.217889ms)
+✖ invalid cost rejected: -1 (0.267144ms)
+✖ invalid cost rejected: not-a-number (0.154403ms)
+✖ all layers must approve execution (1.168066ms)
+✖ nonnumeric trust is rejected (0.295457ms)
+✖ self-asserted capsule cannot authorize standalone recovery (0.340204ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 1
+ℹ fail 13
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 97.105972
+
+✖ failing tests:
+
+test at test/security-regressions.test.js:10:1
+✖ permission and publisher changes invalidate fingerprint (1.78701ms)
+  AssertionError [ERR_ASSERTION]: Expected "actual" to be strictly unequal to:
+  
+  'e9c0ec4b5b60c9965d956e3da7579d274512525f9a13c5f0e5967fecff03ec8a'
+      at TestContext.<anonymous> (file:///workspace/scratch/49909e0a1b7e/swarmer-repair-2026-10-04/test/security-regressions.test.js:11:104)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'e9c0ec4b5b60c9965d956e3da7579d274512525f9a13c5f0e5967fecff03ec8a',
+    expected: 'e9c0ec4b5b60c9965d956e3da7579d274512525f9a13c5f0e5967fecff03ec8a',
+    operator: 'notStrictEqual',
+    diff: 'simple'
+  }
+
+test at test/security-regressions.test.js:13:83
+✖ prohibited behavior blocks regardless of score: ignore previous instructions (0.60878ms)
+  AssertionError [ERR_ASSERTION]: Expected "actual" to be strictly unequal to:
+  
+  'ALLOW'
+      at TestContext.<anonymous> (file:///workspace/scratch/49909e0a1b7e/swarmer-repair-2026-10-04/test/security-regressions.test.js:13:160)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ALLOW',
+    expected: 'ALLOW',
+    operator: 'notStrictEqual',
+    diff: 'simple'
+  }
+
+test at test/security-regressions.test.js:13:83
+✖ prohibited behavior blocks regardless of score: read process.env API_KEY (0.279883ms)
+  AssertionError [ERR_ASSERTION]: Expected "actual" to be strictly unequal to:
+  
+  'ALLOW'
+      at TestContext.<anonymous> (file:///workspace/scratch/49909e0a1b7e/swarmer-repair-2026-10-04/test/security-regressions.test.js:13:160)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ALLOW',
+    expected: 'ALLOW',
+    operator: 'notStrictEqual',
+    diff: 'simple'
+  }
+
+test at test/security-regressions.test.js:14:1
+✖ empty tool and destination allowlists deny access (5.019857ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(detectThreats({action,resource:'unknown',attributes:{}},{allowed_tools:[],allowed_destinations:[]}).some(f=>f.rule===rule))
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/49909e0a1b7e/swarmer-repair-2026-10-04/test/security-regressions.test.js:15:103)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test/security-regressions.test.js:17:1
+✖ empty action allowlist denies low risk delete (0.439534ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/49909e0a1b7e/swarmer-repair-2026-10-04/test/security-regressions.test.js:17:65)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/security-regressions.test.js:18:1
+✖ consequential operation cannot be relabeled low risk (0.153612ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/49909e0a1b7e/swarmer-repair-2026-10-04/test/security-regressions.test.js:18:72)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/security-regressions.test.js:19:1
+✖ string approval and disabled gate cannot authorize (0.267153ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/49909e0a1b7e/swarmer-repair-2026-10-04/test/security-regressions.test.js:20:55)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/security-regressions.test.js:22:65
+✖ invalid cost rejected: NaN (0.168445ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/49909e0a1b7e/swarmer-repair-2026-10-04/test/security-regressions.test.js:22:126)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/security-regressions.test.js:22:65
+✖ invalid cost rejected: -1 (0.267144ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/49909e0a1b7e/swarmer-repair-2026-10-04/test/security-regressions.test.js:22:126)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/security-regressions.test.js:22:65
+✖ invalid cost rejected: not-a-number (0.154403ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/49909e0a1b7e/swarmer-repair-2026-10-04/test/security-regressions.test.js:22:126)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/security-regressions.test.js:23:1
+✖ all layers must approve execution (1.168066ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'ALLOW' !== 'BLOCK'
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/49909e0a1b7e/swarmer-repair-2026-10-04/test/security-regressions.test.js:25:86)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ALLOW',
+    expected: 'BLOCK',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/security-regressions.test.js:28:1
+✖ nonnumeric trust is rejected (0.295457ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/49909e0a1b7e/swarmer-repair-2026-10-04/test/security-regressions.test.js:28:48)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/security-regressions.test.js:29:1
+✖ self-asserted capsule cannot authorize standalone recovery (0.340204ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'resume-approved'
+  - 'resume-denied'
+            ^
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/49909e0a1b7e/swarmer-repair-2026-10-04/test/security-regressions.test.js:29:78)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'resume-approved',
+    expected: 'resume-denied',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

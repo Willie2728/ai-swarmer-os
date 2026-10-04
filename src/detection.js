@@ -11,8 +11,8 @@ export function detectThreats(event, agent = {}) {
   if (INJECTION.test(text)) add('prompt-injection', 'high', 'Prompt injection indicators detected', 75, 'Instruction-override language in event attributes');
   if (SENSITIVE.test(text) && ['network.egress', 'tool.call', 'data.read'].includes(event.action)) add('sensitive-data-access', 'high', 'Possible sensitive data movement', 80, 'Sensitive-data marker combined with access or egress');
   if (event.action === 'network.egress' && event.attributes?.bytes > 5_000_000) add('large-egress', 'critical', 'Unusually large outbound transfer', 95, `${event.attributes.bytes} outbound bytes`);
-  if (event.action === 'network.egress' && agent.allowed_destinations?.length && !agent.allowed_destinations.includes(event.resource)) add('destination-deny', 'critical', 'Unapproved outbound destination', 98, `Destination ${event.resource} is not allowlisted`);
-  if (event.action === 'tool.call' && agent.allowed_tools?.length && !agent.allowed_tools.includes(event.resource)) add('tool-deny', 'critical', 'Unapproved tool invocation', 98, `Tool ${event.resource} is not allowlisted`);
+  if (event.action === 'network.egress' && !(agent.allowed_destinations||[]).includes(event.resource)) add('destination-deny', 'critical', 'Unapproved outbound destination', 98, `Destination ${event.resource} is not allowlisted`);
+  if (event.action === 'tool.call' && !(agent.allowed_tools||[]).includes(event.resource)) add('tool-deny', 'critical', 'Unapproved tool invocation', 98, `Tool ${event.resource} is not allowlisted`);
   if (event.action === 'credential.access') add('credential-access', 'high', 'Agent accessed credential material', 85, 'Credential access event requires investigation');
   if (event.action === 'process.execute' && SHELL.test(text + event.resource)) add('shell-execution', 'high', 'Shell or transfer utility execution', 82, 'Command execution tooling observed');
   if ((event.attributes?.delegation_depth || 0) > 3) add('delegation-depth', 'medium', 'Agent delegation depth exceeded', 60, `Depth ${event.attributes.delegation_depth}`);
