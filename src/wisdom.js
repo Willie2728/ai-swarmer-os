@@ -8,8 +8,9 @@ export function wisdomStatus() {
   const configured=Boolean(process.env.TAVUS_API_KEY&&envKey('wisdom','PERSONA_ID'));
   return {
     configured,
+    operational:false,
     replica_configured:Boolean(envKey('wisdom','REPLICA_ID')),
-    provider:configured?'tavus':'not-configured',
+    provider:configured?'tavus-disabled-pending-enforcement':'not-configured',
     guides:Object.entries(GUIDE_ROSTER).map(([id,g])=>({id,...g,video_configured:Boolean(process.env.TAVUS_API_KEY&&envKey(id,'PERSONA_ID'))})),
     capabilities:['platform guidance','guide orchestration','security explanations','workflow navigation','permission-gated tasks','credential-gated voice and video']
   };
@@ -19,26 +20,8 @@ export async function createGuideSession(guide='wisdom',pageContext='overview') 
   const guideId=guide in GUIDE_ROSTER?guide:'wisdom';
   const apiKey=process.env.TAVUS_API_KEY, personaId=envKey(guideId,'PERSONA_ID');
   if(!apiKey||!personaId)throw Object.assign(new Error(`${GUIDE_ROSTER[guideId].name} needs TAVUS_API_KEY and a configured persona ID in the server environment.`),{status:503});
-  const profile=GUIDE_ROSTER[guideId];
-  const payload={
-    persona_id:personaId,
-    conversation_name:`AI SWARMER OS — ${profile.name}`,
-    require_auth:true,
-    max_participants:2,
-    custom_greeting:`Welcome. I’m ${profile.name}, your ${profile.title}. How can I help?`,
-    conversational_context:`${PLATFORM_CONTEXT}\nYou are presenting as ${profile.name}, the ${profile.title}, focused on ${profile.domain}. The user is viewing: ${String(pageContext).slice(0,120)}.`,
-    properties:{enable_closed_captions:true,participant_absent_timeout:120}
-  };
-  const replicaId=envKey(guideId,'REPLICA_ID');
-  if(replicaId)payload.replica_id=replicaId;
-  if(process.env.TAVUS_DOCUMENT_IDS)payload.document_ids=process.env.TAVUS_DOCUMENT_IDS.split(',').map(x=>x.trim()).filter(Boolean);
-  const response=await fetch('https://tavusapi.com/v2/conversations',{method:'POST',headers:{'content-type':'application/json','x-api-key':apiKey},body:JSON.stringify(payload),signal:AbortSignal.timeout(15000)});
-  const data=await response.json().catch(()=>({}));
-  if(!response.ok)throw Object.assign(new Error(data.message||data.error||`Tavus returned ${response.status}`),{status:502});
-  const room=new URL(data.conversation_url);
-  if(room.protocol!=='https:'||!room.hostname.endsWith('.daily.co'))throw Object.assign(new Error('Tavus returned an unexpected conversation host.'),{status:502});
-  if(data.meeting_token)room.searchParams.set('t',data.meeting_token);
-  return {conversation_id:data.conversation_id,join_url:room.toString(),status:data.status,guide:guideId};
+  throw Object.assign(new Error('External guide sessions are disabled until a dedicated authenticated provider adapter is integrated and tested.'),{status:503});
+
 }
 
 export const createWisdomSession=pageContext=>createGuideSession('wisdom',pageContext);

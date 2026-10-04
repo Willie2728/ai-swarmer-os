@@ -1,0 +1,336 @@
+TAP version 13
+# Subtest: validates and normalizes IP addresses
+ok 1 - validates and normalizes IP addresses
+  ---
+  duration_ms: 4.842519
+  type: 'test'
+  ...
+# Subtest: ignores spoofable forwarding headers by default
+ok 2 - ignores spoofable forwarding headers by default
+  ---
+  duration_ms: 1.356931
+  type: 'test'
+  ...
+# Subtest: uses forwarding path only when proxy trust is explicit
+ok 3 - uses forwarding path only when proxy trust is explicit
+  ---
+  duration_ms: 0.353143
+  type: 'test'
+  ...
+# Subtest: stable characteristics produce a stable campaign
+ok 4 - stable characteristics produce a stable campaign
+  ---
+  duration_ms: 0.934282
+  type: 'test'
+  ...
+# Subtest: safe declared capability is fingerprinted and allowed
+ok 5 - safe declared capability is fingerprinted and allowed
+  ---
+  duration_ms: 2.035777
+  type: 'test'
+  ...
+# Subtest: high-risk secret/exfiltration behavior is not installable
+ok 6 - high-risk secret/exfiltration behavior is not installable
+  ---
+  duration_ms: 0.536251
+  type: 'test'
+  ...
+# Subtest: claimed-vs-observed mismatch quarantines
+ok 7 - claimed-vs-observed mismatch quarantines
+  ---
+  duration_ms: 0.771335
+  type: 'test'
+  ...
+# Subtest: material changes alter the cryptographic fingerprint
+ok 8 - material changes alter the cryptographic fingerprint
+  ---
+  duration_ms: 0.23171
+  type: 'test'
+  ...
+# Subtest: undeclared source and version are surfaced
+ok 9 - undeclared source and version are surfaced
+  ---
+  duration_ms: 0.299443
+  type: 'test'
+  ...
+# Subtest: blocks unapproved tool calls
+ok 10 - blocks unapproved tool calls
+  ---
+  duration_ms: 1.093222
+  type: 'test'
+  ...
+# Subtest: blocks large egress
+ok 11 - blocks large egress
+  ---
+  duration_ms: 0.237098
+  type: 'test'
+  ...
+# Subtest: allows expected behavior
+ok 12 - allows expected behavior
+  ---
+  duration_ms: 0.533707
+  type: 'test'
+  ...
+# Subtest: contained agents always block
+ok 13 - contained agents always block
+  ---
+  duration_ms: 0.122846
+  type: 'test'
+  ...
+# Subtest: guide roster preserves the Wisdom and Knowledge Guide operating model
+ok 14 - guide roster preserves the Wisdom and Knowledge Guide operating model
+  ---
+  duration_ms: 0.739027
+  type: 'test'
+  ...
+# Subtest: diligence questions route to the appropriate Knowledge Guide
+ok 15 - diligence questions route to the appropriate Knowledge Guide
+  ---
+  duration_ms: 1.554059
+  type: 'test'
+  ...
+# Subtest: guides refuse protected information
+ok 16 - guides refuse protected information
+  ---
+  duration_ms: 0.253934
+  type: 'test'
+  ...
+# Subtest: unknown diligence questions request human follow-up instead of inventing facts
+ok 17 - unknown diligence questions request human follow-up instead of inventing facts
+  ---
+  duration_ms: 0.199832
+  type: 'test'
+  ...
+# Subtest: approved trusted recovery capsule can resume
+ok 18 - approved trusted recovery capsule can resume
+  ---
+  duration_ms: 1.870427
+  type: 'test'
+  ...
+# Subtest: tampered nested checkpoint state is denied
+ok 19 - tampered nested checkpoint state is denied
+  ---
+  duration_ms: 0.388066
+  type: 'test'
+  ...
+# Subtest: unverified or low trust checkpoint is denied
+ok 20 - unverified or low trust checkpoint is denied
+  ---
+  duration_ms: 0.328436
+  type: 'test'
+  ...
+# Subtest: SOVRAIL defaults to local-first routing
+ok 21 - SOVRAIL defaults to local-first routing
+  ---
+  duration_ms: 1.698436
+  type: 'test'
+  ...
+# Subtest: SOVRAIL blocks execution without SWARMER approval
+ok 22 - SOVRAIL blocks execution without SWARMER approval
+  ---
+  duration_ms: 0.328346
+  type: 'test'
+  ...
+# Subtest: SOVRAIL blocks disallowed providers
+ok 23 - SOVRAIL blocks disallowed providers
+  ---
+  duration_ms: 0.195045
+  type: 'test'
+  ...
+# Subtest: request fingerprint is stable for matching request shapes
+ok 24 - request fingerprint is stable for matching request shapes
+  ---
+  duration_ms: 0.186842
+  type: 'test'
+  ...
+# Subtest: integration version is exposed
+not ok 25 - integration version is exposed
+  ---
+  duration_ms: 1.215767
+  type: 'test'
+  location: '/workspace/scratch/49909e0a1b7e/swarmer-unified-audit/test/sovrail.test.js:29:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + '3.0-swarmer'
+    - '2.0-swarmer'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: '2.0-swarmer'
+  actual: '3.0-swarmer'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///workspace/scratch/49909e0a1b7e/swarmer-unified-audit/test/sovrail.test.js:29:50)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+    Test.postRun (node:internal/test_runner/test:1522:19)
+    Test.run (node:internal/test_runner/test:1447:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: visitor is converted to handoff-only work object
+ok 26 - visitor is converted to handoff-only work object
+  ---
+  duration_ms: 1.741643
+  type: 'test'
+  ...
+# Subtest: network, shell and credential requests are rejected
+ok 27 - network, shell and credential requests are rejected
+  ---
+  duration_ms: 0.300454
+  type: 'test'
+  ...
+# Subtest: outbound result strips sensitive fields
+ok 28 - outbound result strips sensitive fields
+  ---
+  duration_ms: 1.094834
+  type: 'test'
+  ...
+# Subtest: policy never grants visiting execution presence
+ok 29 - policy never grants visiting execution presence
+  ---
+  duration_ms: 0.221084
+  type: 'test'
+  ...
+# Subtest: unified stack allows a clean bounded capability
+ok 30 - unified stack allows a clean bounded capability
+  ---
+  duration_ms: 3.560611
+  type: 'test'
+  ...
+# Subtest: blocks prompt injection
+not ok 31 - blocks prompt injection
+  ---
+  duration_ms: 1.551635
+  type: 'test'
+  location: '/workspace/scratch/49909e0a1b7e/swarmer-unified-audit/test/unified-stack-adversarial.test.js:27:35'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    'ALLOW' !== 'BLOCK'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'BLOCK'
+  actual: 'ALLOW'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///workspace/scratch/49909e0a1b7e/swarmer-unified-audit/test/unified-stack-adversarial.test.js:29:10)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+    Test.postRun (node:internal/test_runner/test:1522:19)
+    Test.run (node:internal/test_runner/test:1447:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+# Subtest: blocks credential theft
+not ok 32 - blocks credential theft
+  ---
+  duration_ms: 0.563211
+  type: 'test'
+  location: '/workspace/scratch/49909e0a1b7e/swarmer-unified-audit/test/unified-stack-adversarial.test.js:27:35'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    'ALLOW' !== 'BLOCK'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'BLOCK'
+  actual: 'ALLOW'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///workspace/scratch/49909e0a1b7e/swarmer-unified-audit/test/unified-stack-adversarial.test.js:29:10)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1382:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+    Test.postRun (node:internal/test_runner/test:1522:19)
+    Test.run (node:internal/test_runner/test:1447:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: blocks destructive command
+ok 33 - blocks destructive command
+  ---
+  duration_ms: 0.433906
+  type: 'test'
+  ...
+# Subtest: blocks privilege escalation
+ok 34 - blocks privilege escalation
+  ---
+  duration_ms: 0.665336
+  type: 'test'
+  ...
+# Subtest: blocks tool poisoning
+ok 35 - blocks tool poisoning
+  ---
+  duration_ms: 0.331421
+  type: 'test'
+  ...
+# Subtest: blocks exfiltration
+ok 36 - blocks exfiltration
+  ---
+  duration_ms: 0.914562
+  type: 'test'
+  ...
+# Subtest: quarantines behavior outside claimed capability
+ok 37 - quarantines behavior outside claimed capability
+  ---
+  duration_ms: 0.296908
+  type: 'test'
+  ...
+# Subtest: blocks unapproved provider even after capability admission
+ok 38 - blocks unapproved provider even after capability admission
+  ---
+  duration_ms: 0.45634
+  type: 'test'
+  ...
+# Subtest: blocks explicitly denied action
+ok 39 - blocks explicitly denied action
+  ---
+  duration_ms: 1.452615
+  type: 'test'
+  ...
+# Subtest: blocks high-risk consequential action
+ok 40 - blocks high-risk consequential action
+  ---
+  duration_ms: 3.568653
+  type: 'test'
+  ...
+# Subtest: recovery capsule cannot resume after trust failure
+ok 41 - recovery capsule cannot resume after trust failure
+  ---
+  duration_ms: 0.205951
+  type: 'test'
+  ...
+# Subtest: WISDOM navigates platform workflows
+ok 42 - WISDOM navigates platform workflows
+  ---
+  duration_ms: 1.346815
+  type: 'test'
+  ...
+# Subtest: WISDOM summarizes live security state
+ok 43 - WISDOM summarizes live security state
+  ---
+  duration_ms: 0.491032
+  type: 'test'
+  ...
+# Subtest: WISDOM requires approval for write actions
+ok 44 - WISDOM requires approval for write actions
+  ---
+  duration_ms: 0.322928
+  type: 'test'
+  ...
+1..44
+# tests 44
+# suites 0
+# pass 41
+# fail 3
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 208.802853

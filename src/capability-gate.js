@@ -12,7 +12,8 @@ const RISK_PATTERNS = [
 ];
 
 export function fingerprintCapability(capability={}) {
-  const material=JSON.stringify({source:capability.source||'',version:capability.version||'',content:capability.content||'',manifest:capability.manifest||{},dependencies:capability.dependencies||[]});
+  const canonical=v=>Array.isArray(v)?v.map(canonical):v&&typeof v==='object'?Object.fromEntries(Object.keys(v).sort().map(k=>[k,canonical(v[k])])):v;
+  const material=JSON.stringify(canonical(capability));
   return createHash('sha256').update(material).digest('hex');
 }
 
@@ -36,6 +37,6 @@ export function compareClaimedObserved(claimed=[],observed=[]) {
 export function capabilityAdmission(capability, observedActions=[]) {
   const inspection=inspectCapability(capability);
   const behavior=compareClaimedObserved(capability.claimed_actions||[],observedActions);
-  const outcome=inspection.recommendation==='DO_NOT_INSTALL'||behavior.decision==='QUARANTINE'?'QUARANTINE':inspection.requires_red_room?'RED_ROOM_REQUIRED':'ALLOW';
+  const outcome=inspection.findings.some(f=>f.rule!=='unverified-source'&&f.rule!=='unversioned-capability')||inspection.recommendation==='DO_NOT_INSTALL'||behavior.decision==='QUARANTINE'?'QUARANTINE':inspection.requires_red_room?'RED_ROOM_REQUIRED':'ALLOW';
   return {...inspection,behavior,outcome,trust_is_continuous:true,revalidate_on:['content_change','version_change','dependency_change','permission_change','publisher_change','fingerprint_change']};
 }

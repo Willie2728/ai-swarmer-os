@@ -1,0 +1,124 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> ai-swarmer-os@0.1.0 test
+> node --test
+
+✔ validates and normalizes IP addresses (3.552489ms)
+✔ ignores spoofable forwarding headers by default (1.012971ms)
+✔ uses forwarding path only when proxy trust is explicit (0.236417ms)
+✔ stable characteristics produce a stable campaign (0.724325ms)
+✔ safe declared capability is fingerprinted and allowed (1.99801ms)
+✔ high-risk secret/exfiltration behavior is not installable (0.536191ms)
+✔ claimed-vs-observed mismatch quarantines (0.812207ms)
+✔ material changes alter the cryptographic fingerprint (0.231981ms)
+✔ undeclared source and version are surfaced (0.309467ms)
+✔ blocks unapproved tool calls (1.216588ms)
+✔ blocks large egress (0.233082ms)
+✔ allows expected behavior (0.699808ms)
+✔ contained agents always block (0.156056ms)
+✔ guide roster preserves the Wisdom and Knowledge Guide operating model (0.974323ms)
+✔ diligence questions route to the appropriate Knowledge Guide (1.791298ms)
+✔ guides refuse protected information (0.330709ms)
+✔ unknown diligence questions request human follow-up instead of inventing facts (0.220944ms)
+✔ approved trusted recovery capsule can resume (2.200356ms)
+✔ tampered nested checkpoint state is denied (0.249307ms)
+✔ unverified or low trust checkpoint is denied (0.227403ms)
+✔ SOVRAIL defaults to local-first routing (1.618706ms)
+✔ SOVRAIL blocks execution without SWARMER approval (0.401546ms)
+✔ SOVRAIL blocks disallowed providers (0.144188ms)
+✔ request fingerprint is stable for matching request shapes (0.138269ms)
+✖ integration version is exposed (1.387146ms)
+✔ visitor is converted to handoff-only work object (1.478344ms)
+✔ network, shell and credential requests are rejected (0.166502ms)
+✔ outbound result strips sensitive fields (0.540968ms)
+✔ policy never grants visiting execution presence (0.172331ms)
+✔ unified stack allows a clean bounded capability (2.365135ms)
+✖ blocks prompt injection (1.454689ms)
+✖ blocks credential theft (0.369338ms)
+✔ blocks destructive command (0.255937ms)
+✔ blocks privilege escalation (0.225671ms)
+✔ blocks tool poisoning (0.222136ms)
+✔ blocks exfiltration (0.160593ms)
+✔ quarantines behavior outside claimed capability (0.186712ms)
+✔ blocks unapproved provider even after capability admission (0.265552ms)
+✔ blocks explicitly denied action (1.320606ms)
+✔ blocks high-risk consequential action (0.26488ms)
+✔ recovery capsule cannot resume after trust failure (0.196527ms)
+✔ WISDOM navigates platform workflows (0.935603ms)
+✔ WISDOM summarizes live security state (0.397671ms)
+✔ WISDOM requires approval for write actions (0.278881ms)
+ℹ tests 44
+ℹ suites 0
+ℹ pass 41
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 176.571279
+
+✖ failing tests:
+
+test at test/sovrail.test.js:29:1
+✖ integration version is exposed (1.387146ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '3.0-swarmer'
+  - '2.0-swarmer'
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/49909e0a1b7e/swarmer-repair-2026-10-04/test/sovrail.test.js:29:50)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '3.0-swarmer',
+    expected: '2.0-swarmer',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/unified-stack-adversarial.test.js:27:35
+✖ blocks prompt injection (1.454689ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'ALLOW' !== 'BLOCK'
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/49909e0a1b7e/swarmer-repair-2026-10-04/test/unified-stack-adversarial.test.js:29:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ALLOW',
+    expected: 'BLOCK',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/unified-stack-adversarial.test.js:27:35
+✖ blocks credential theft (0.369338ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'ALLOW' !== 'BLOCK'
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/49909e0a1b7e/swarmer-repair-2026-10-04/test/unified-stack-adversarial.test.js:29:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'ALLOW',
+    expected: 'BLOCK',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -62,9 +62,11 @@ export function fingerprintRequest(request={}){
 
 export function sovrailAuthorizationDecision({swarmerApproved,provider,estimatedCostUsd=0,policy:input={}}={}){
   const policy=normalizeSovrailPolicy(input); const reasons=[];
-  if(policy.requireSwarmerApproval&&!swarmerApproved) reasons.push('SWARMER approval is required before external execution');
+  if(swarmerApproved!==true) reasons.push('SWARMER approval is required before external execution');
   if(!policy.allowedProviders.includes(String(provider||'').toLowerCase())) reasons.push('Provider is not allowed by SOVRAIL policy');
-  if(usage.estimated_spend_usd+Number(estimatedCostUsd||0)>policy.maxDailySpendUsd) reasons.push('Daily SOVRAIL spend ceiling would be exceeded');
+  if(typeof estimatedCostUsd!=='number'||!Number.isFinite(estimatedCostUsd)||estimatedCostUsd<0) reasons.push('Finite nonnegative numeric cost required');
+  if(!Number.isFinite(policy.maxDailySpendUsd)) reasons.push('Finite budget required');
+  if(usage.estimated_spend_usd+estimatedCostUsd>policy.maxDailySpendUsd) reasons.push('Daily SOVRAIL spend ceiling would be exceeded');
   const approved=reasons.length===0; if(!approved) usage.blocked++;
   return {approved,reasons,provider,estimatedCostUsd:Number(estimatedCostUsd||0)};
 }
@@ -93,8 +95,8 @@ export function buildGearShiftReport({task='',currentGear=5,gears=[],mode='estim
 export function actionAuthorizationDecision({action='',risk='medium',allowedActions=[],deniedActions=[]}={}){
   const a=String(action).toLowerCase();
   if(deniedActions.map(x=>String(x).toLowerCase()).includes(a)) return {approved:false,reason:'action explicitly denied'};
-  if(allowedActions.length&&!allowedActions.map(x=>String(x).toLowerCase()).includes(a)) return {approved:false,reason:'action not in approved action set'};
-  if(['purchase','delete','security-change','send-external','credential-change'].includes(a)&&risk==='high') return {approved:false,reason:'high-risk consequential action requires explicit higher authorization'};
+  if(!allowedActions.map(x=>String(x).toLowerCase()).includes(a)) return {approved:false,reason:'action not in approved action set'};
+  if(['purchase','delete','security-change','send-external','credential-change'].includes(a)) return {approved:false,reason:'high-risk consequential action requires explicit higher authorization'};
   return {approved:true,reason:'action permitted by current policy'};
 }
 

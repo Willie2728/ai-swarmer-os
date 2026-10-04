@@ -29,6 +29,8 @@ export function validateRecoveryCapsule(capsule,policy={}){
   if(!capsule.environment_fingerprint)reasons.push('environment fingerprint required');
   if(capsule.capability_gate_approval!=='approved')reasons.push('capability gate approval required');
   if(capsule.behavioral_verification_status!=='verified')reasons.push('behavioral verification required');
+  if(!Number.isFinite(minimumTrust)||minimumTrust<0||minimumTrust>100)reasons.push('invalid minimum trust');
+  if(!Number.isFinite(capsule.swarmer_trust_score)||capsule.swarmer_trust_score<0||capsule.swarmer_trust_score>100)reasons.push('invalid trust score');
   if(Number(capsule.swarmer_trust_score)<minimumTrust)reasons.push(`trust score below ${minimumTrust}`);
   const {integrity_hash,...unsigned}=capsule;
   const expected=createHash('sha256').update(stable(unsigned)).digest('hex');
@@ -38,5 +40,7 @@ export function validateRecoveryCapsule(capsule,policy={}){
 
 export function recoveryDecision(capsule,policy={}){
   const validation=validateRecoveryCapsule(capsule,policy);
+  validation.approved=false;
+  validation.reasons.push('Authenticated runtime checkpoint required; caller-built capsules cannot authorize recovery');
   return {decision_id:randomUUID(),capsule_id:capsule.capsule_id,task_id:capsule.task_id,agent_id:capsule.agent_id,outcome:validation.approved?'resume-approved':'resume-denied',validation,decided_at:new Date().toISOString()};
 }

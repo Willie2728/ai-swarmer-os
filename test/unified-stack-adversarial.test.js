@@ -13,7 +13,7 @@ test('unified stack allows a clean bounded capability',()=>{
   const r=evaluateUnifiedStack(base);
   assert.equal(r.decision,'ALLOW');
   assert.equal(r.execution.approved,true);
-  assert.equal(r.recovery.outcome,'resume-approved');
+  assert.equal(r.recovery.outcome,'resume-eligible');
 });
 
 const attacks=[

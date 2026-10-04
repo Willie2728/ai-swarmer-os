@@ -10,12 +10,12 @@ const approvedInput={
   behavioral_verification_status:'verified', security_policy_version:'2026-09-04'
 };
 
-test('approved trusted recovery capsule can resume',()=>{
+test('valid capsule is structurally eligible but cannot self-authorize recovery',()=>{
   const capsule=buildRecoveryCapsule(approvedInput);
   const validation=validateRecoveryCapsule(capsule,{minimum_trust_score:80});
   assert.equal(validation.approved,true);
   assert.equal(validation.integrity_valid,true);
-  assert.equal(recoveryDecision(capsule,{minimum_trust_score:80}).outcome,'resume-approved');
+  assert.equal(recoveryDecision(capsule,{minimum_trust_score:80}).outcome,'resume-denied');
 });
 
 test('tampered nested checkpoint state is denied',()=>{
